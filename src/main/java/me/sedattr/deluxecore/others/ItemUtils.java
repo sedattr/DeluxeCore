@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemUtils {
-    public static void changeName(ItemStack item, String name, PlaceholderUtil placeholderUtil) {
+    public static void changeName(ItemStack item, String name, Placeholders placeholderUtil) {
         if (item == null)
             return;
         if (name.isEmpty())
@@ -22,7 +22,7 @@ public class ItemUtils {
         item.setItemMeta(meta);
     }
 
-    public static void changeLore(ItemStack item, List<String> lore, PlaceholderUtil placeholderUtil) {
+    public static void changeLore(ItemStack item, List<String> lore, Placeholders placeholderUtil) {
         if (item == null)
             return;
         if (lore.isEmpty())

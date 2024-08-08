@@ -18,7 +18,7 @@ public class DeluxeCore {
 
     public void setup(JavaPlugin plugin) {
         instance = plugin;
-        this.version = Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4).replace(".", ""));
+        version = Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4).replace(".", ""));
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new InventoryListeners(), plugin);

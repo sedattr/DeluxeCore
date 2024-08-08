@@ -3,7 +3,7 @@ package me.sedattr.deluxecore.others;
 import java.util.Map;
 
 public class PlaceholderUtils {
-    public static String replacePlaceholders(String message, PlaceholderUtil placeholderUtil) {
+    public static String replacePlaceholders(String message, Placeholders placeholderUtil) {
         if (placeholderUtil == null)
             return message;
 

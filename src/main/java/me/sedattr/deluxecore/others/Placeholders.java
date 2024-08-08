@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class PlaceholderUtil {
+public class Placeholders {
     private final Map<String, String> placeholders = new HashMap<>();
 
-    public PlaceholderUtil addPlaceholder(String key, String value) {
+    public Placeholders addPlaceholder(String key, String value) {
         if (key == null)
             return this;
         if (value == null)
@@ -19,7 +19,7 @@ public class PlaceholderUtil {
         return this;
     }
 
-    public PlaceholderUtil removePlaceholder(String key) {
+    public Placeholders removePlaceholder(String key) {
         if (key == null)
             return this;
 
