@@ -33,8 +33,8 @@ public class CustomInventory implements InventoryHolder {
         if (player == null)
             return;
 
+        InventoryAPI.addPlayerInventory(player, this);
         player.openInventory(this.inventory);
-        InventoryAPI.inventories.put(player, this);
     }
 
     public void close(Player player) {

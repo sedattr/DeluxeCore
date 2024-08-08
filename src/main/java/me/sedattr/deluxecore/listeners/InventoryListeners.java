@@ -5,40 +5,39 @@ import me.sedattr.deluxecore.inventoryapi.InventoryAPI;
 import me.sedattr.deluxecore.inventoryapi.inventory.CustomInventory;
 import me.sedattr.deluxecore.inventoryapi.item.ClickInterface;
 import me.sedattr.deluxecore.inventoryapi.item.InventoryItem;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.ZonedDateTime;
 
 public class InventoryListeners implements Listener {
-    @EventHandler
-    public void onClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player))
+    @EventHandler(priority = EventPriority.LOW)
+    public void onInventoryClick(InventoryClickEvent event) {
+        Inventory inventory = event.getClickedInventory();
+        if (inventory == null)
             return;
-        CustomInventory gui = InventoryAPI.getInventory(player);
-        if (gui == null)
+        if (!(inventory.getHolder() instanceof CustomInventory))
             return;
         event.setCancelled(true);
 
-        Inventory inventory = event.getClickedInventory();
-        if (inventory == null || event.getSlot() < 0)
+        if (!(event.getWhoClicked() instanceof Player player))
+            return;
+        if (event.getSlot() < 0)
+            return;
+
+        CustomInventory gui = InventoryAPI.getPlayerInventory(player);
+        if (gui == null)
             return;
 
         if (!inventory.equals(gui.getInventory()))
             return;
-
-        long cooldown = InventoryAPI.cooldown.getOrDefault(player, 0L);
-        if (cooldown > 0) {
-            long time = ZonedDateTime.now().toInstant().toEpochMilli() - cooldown;
-            if (time < 400)
-                return;
-        }
 
         InventoryItem clickableItem = gui.getItem(event.getSlot());
         if (clickableItem == null)
@@ -48,51 +47,39 @@ public class InventoryListeners implements Listener {
         if (click == null)
             return;
 
+        long cooldown = InventoryAPI.getCooldown(player);
+        if (cooldown > 0) {
+            long time = ZonedDateTime.now().toInstant().toEpochMilli() - cooldown;
+            if (time < 400)
+                return;
+        }
+
         click.click(event);
-        InventoryAPI.cooldown.put(player, ZonedDateTime.now().toInstant().toEpochMilli());
+        InventoryAPI.addCooldown(player, ZonedDateTime.now().toInstant().toEpochMilli());
     }
 
-    @EventHandler
-    public void onOpen(InventoryOpenEvent event) {
+    @EventHandler(priority = EventPriority.LOW)
+    public void onInventoryClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player player))
             return;
 
-        CustomInventory gui = InventoryAPI.getInventory(player);
-        if (gui == null)
-            return;
-
-        InventoryAPI.inventories.remove(player);
-        InventoryAPI.cooldown.remove(player);
-    }
-
-    @EventHandler
-    public void onClose(InventoryCloseEvent event) {
-        if (!(event.getPlayer() instanceof Player player))
-            return;
-        CustomInventory gui = InventoryAPI.getInventory(player);
+        CustomInventory gui = InventoryAPI.getPlayerInventory(player);
         if (gui == null)
             return;
 
         if (gui.isCloseable()) {
-            InventoryAPI.inventories.remove(player);
-            InventoryAPI.cooldown.remove(player);
-            if (DeluxeCore.getInstance() == null)
-                return;
-
-            new BukkitRunnable() {
-                public void run() {
-                    player.updateInventory();
-                }
-            }.runTaskLater(DeluxeCore.getInstance(), 1L);
+            InventoryAPI.removePlayerInventory(player);
             return;
         }
-        if (DeluxeCore.getInstance() == null)
-            return;
 
-        new BukkitRunnable() {
-            public void run() {
-                gui.open(player);
-            }
-        }.runTaskLater(DeluxeCore.getInstance(), 1L);
+        Bukkit.getScheduler().runTaskLater(DeluxeCore.getInstance(), () -> gui.open(player), 1L);
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e) {
+        Player player = e.getPlayer();
+
+        InventoryAPI.removeCooldown(player);
+        InventoryAPI.removePlayerInventory(player);
     }
 }
