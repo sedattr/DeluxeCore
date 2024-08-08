@@ -14,10 +14,11 @@ import java.util.HashMap;
 public class DeluxeCore {
     public static HashMap<Player, ChatInput> chatInputs = new HashMap<>();
     @Getter private static JavaPlugin instance;
+    public static int version;
 
     public void setup(JavaPlugin plugin) {
         instance = plugin;
-
+        this.version = Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4).replace(".", ""));
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new InventoryListeners(), plugin);

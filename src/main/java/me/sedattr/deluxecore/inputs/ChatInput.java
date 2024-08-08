@@ -5,7 +5,6 @@ import lombok.Setter;
 import me.sedattr.deluxecore.DeluxeCore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter
@@ -21,6 +20,9 @@ public class ChatInput {
     public void open(Player player, Integer time) {
         DeluxeCore.chatInputs.put(player, this);
 
-        this.handler.runTaskLater(DeluxeCore.getInstance(), time * 20L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(DeluxeCore.getInstance(), () -> {
+            if (!this.handler.isCancelled())
+                this.handler.run();
+        }, time * 20L);
     }
 }
