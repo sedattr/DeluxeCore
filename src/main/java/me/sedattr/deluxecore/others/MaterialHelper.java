@@ -1488,7 +1488,6 @@ public enum MaterialHelper {
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG"),
     ZOMBIE_WALL_HEAD("SKULL", "SKULL_ITEM"),
     ZOMBIFIED_PIGLIN_SPAWN_EGG("MONSTER_EGG", "ZOMBIE_PIGMAN_SPAWN_EGG");
-
     private static final MaterialHelper[] VALUES = values();
     private static final Map<String, MaterialHelper> NAMES = new HashMap<>();
     private static final Map<String, MaterialHelper> NAME_CACHE = new HashMap<>();
