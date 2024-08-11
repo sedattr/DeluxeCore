@@ -12,13 +12,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 
 public class DeluxeCore {
-    public static HashMap<Player, ChatInput> chatInputs = new HashMap<>();
-    @Getter private static JavaPlugin instance;
-    public static int version;
+    @Getter private static DeluxeCore instance;
 
-    public void setup(JavaPlugin plugin) {
-        instance = plugin;
-        version = Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4).replace(".", ""));
+    @Getter private JavaPlugin plugin;
+    @Getter private final HashMap<Player, ChatInput> chatInputs = new HashMap<>();
+    @Getter private int version;
+
+    public void setup(JavaPlugin javaPlugin) {
+        instance = this;
+        this.plugin = javaPlugin;
+        this.version = Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4).replace(".", ""));
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new InventoryListeners(), plugin);

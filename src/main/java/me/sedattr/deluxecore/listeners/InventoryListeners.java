@@ -72,7 +72,7 @@ public class InventoryListeners implements Listener {
             return;
         }
 
-        Bukkit.getScheduler().runTaskLater(DeluxeCore.getInstance(), () -> gui.open(player), 1L);
+        Bukkit.getScheduler().runTaskLater(DeluxeCore.getInstance().getPlugin(), () -> gui.open(player), 1L);
     }
 
     @EventHandler

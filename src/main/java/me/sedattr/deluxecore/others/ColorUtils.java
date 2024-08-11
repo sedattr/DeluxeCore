@@ -38,7 +38,7 @@ public class ColorUtils {
         if (s == null || s.isEmpty())
             return "";
 
-        if (DeluxeCore.version < 16)
+        if (DeluxeCore.getInstance().getVersion() < 16)
             return ChatColor.translateAlternateColorCodes('&', s);
 
         return hex(s);

@@ -27,7 +27,7 @@ public class AnvilInput {
 
     public AnvilInput setHandler(BukkitRunnable runnable) {
         this.gui.onClick((slot, state) -> {
-            runnable.runTaskAsynchronously(DeluxeCore.getInstance());
+            runnable.runTaskAsynchronously(DeluxeCore.getInstance().getPlugin());
             return Collections.singletonList(AnvilGUI.ResponseAction.close());
         });
 

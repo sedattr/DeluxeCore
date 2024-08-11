@@ -35,7 +35,7 @@ public class SignInput {
 
     public SignInput setHandler(BukkitRunnable runnable) {
         this.gui.setHandler((p, entry) -> {
-            runnable.runTaskAsynchronously(DeluxeCore.getInstance());
+            runnable.runTaskAsynchronously(DeluxeCore.getInstance().getPlugin());
             return Collections.emptyList();
         });
 

@@ -16,7 +16,7 @@ public class ChatListener implements Listener {
     public void chatListener(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
 
-        for (Map.Entry<Player, ChatInput> entry : DeluxeCore.chatInputs.entrySet()) {
+        for (Map.Entry<Player, ChatInput> entry : DeluxeCore.getInstance().getChatInputs().entrySet()) {
             Player owner = entry.getKey();
             ChatInput chatInput = entry.getValue();
 
@@ -26,7 +26,7 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
             HandlerList.unregisterAll(this);
 
-            Bukkit.getScheduler().runTask(DeluxeCore.getInstance(), () -> {
+            Bukkit.getScheduler().runTask(DeluxeCore.getInstance().getPlugin(), () -> {
                 chatInput.setInput(e.getMessage());
 
                 chatInput.getHandler().run();

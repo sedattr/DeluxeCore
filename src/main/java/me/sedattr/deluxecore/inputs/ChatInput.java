@@ -18,9 +18,9 @@ public class ChatInput {
     }
 
     public void open(Player player, Integer time) {
-        DeluxeCore.chatInputs.put(player, this);
+        DeluxeCore.getInstance().getChatInputs().put(player, this);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(DeluxeCore.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(DeluxeCore.getInstance().getPlugin(), () -> {
             if (!this.handler.isCancelled())
                 this.handler.run();
         }, time * 20L);
